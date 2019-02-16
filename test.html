@@ -3,11 +3,122 @@
 <title>test</test>
 </head>
 <body>
-yrdy
-
-test
-sdfsdfsdfsdf
-aaa
 
 </body>
 </html>
+<script>
+    //  函数预编译与AO
+    function test(a){
+        console.log(a);
+        var a = 1;
+        console.log(a);
+        function a(){}
+        console.log(a);
+        var b = function(){}
+        console.log(b);
+        function d(){}
+    }
+    test(2)
+    //AO activation object 活跃对象，函数上下文
+    /*
+    * 1.寻找行参和变量声明
+    * 2.实参值赋值给行参
+    * 3.找函数声明，赋值
+    * 4.执行*/
+    /*AO = {
+         a:undefined ->
+         2 ->
+         function a() {} ->
+         1,
+         b:function () {},
+         d:function d() {}
+    */ }
+
+    //全局预编译与GO
+    /*GO global object 全局上下文
+    *1.找变量
+    *2.找函数声明
+    *3.执行
+    * GO = {
+    *   a:undefined -> function a(){} ->1
+    * }
+    * GO === window*/
+
+    //暗示全局变量与AO、GO
+    var b = 3;
+    console.log(a);
+    function a(a){
+        console.log(a);
+        var a = 2;
+        console.log(a);
+        function a() {
+            var b = 5;
+            console.log(b);
+        }
+    }
+    a(1);
+    /*GO = {
+        b:undefined -> 3,
+        a:function () {...}
+    }
+    AO = {
+        a:undefined -> 1 ->function a(){} ->2,
+        b:undefined -> 5
+    }
+    */
+    function test(){
+        console.log(b);
+        if(a){
+            var b = 2;
+        }
+        c = 3;
+        console.log(c);
+    }
+    var a;
+    test();
+    a = 1;
+    console.log(a);
+    /*
+    *预编译的时候不需要去看判断语句，未被定义的变量直接提升为全局变量
+    * GO = {
+    *   a:undefined,
+    *   test:function test(){...}
+    *   c:3   c没有被var定义，则提升为全局变量
+    * }
+    *
+    * AO = {
+    *   b:undefined
+    * }*/
+    a = 1;
+    function test(e) {
+        function e() {}
+        arguments[0] = 2;
+        console.log(e);
+        if(a){
+            var b = 3;
+        }
+        var c;
+        a = 4;
+        var a;
+        console.log(b);
+        f = 5;
+        console.log(c);
+        console.log(a);
+    }
+    var a;
+    test(1);
+    console.log(a,f);
+
+    /*GO = {
+        a:undefined -> 1,
+        test:function test() {...},
+        f:undefined -> 5
+    }
+
+    AO = {
+        e:undefined - > 1 -> function e(){} -> 2,
+        b:undefined ,
+        c:undefined,
+        a:undefined -> 4,
+    }*/
+</script>
